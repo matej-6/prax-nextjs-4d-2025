@@ -1,13 +1,9 @@
 import { getDb } from "@/lib/db";
+import { formatDuration } from "@/lib/time";
 import { ArrowUpRight, ClockIcon } from "lucide-react";
 import Link from "next/link";
 
-function formatDuration(duration: number): string {
-  const minutes = Math.floor(duration / 60);
-  const seconds = duration % 60;
 
-  return `${minutes}` + ":" + `${seconds}`.padStart(2, "0");
-}
 
 export default async function AlbumDetail({
   params,

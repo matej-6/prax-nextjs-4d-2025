@@ -71,11 +71,11 @@ export default async function AlbumDetail({
             <h3 className="text-2xl">
               {albums.length > 0 ? "Albums" : "No albums yet"}
             </h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               {albums.map((album) => (
                 <div
                   key={album.id}
-                  className="card bg-base-100 w-64 card-xl shadow-sm"
+                  className="card bg-base-100 w-80 card-xl shadow-sm"
                 >
                   <div className="card-body">
                     <span className="badge badge-sm bg-emerald-200 text-emerald-800">
