@@ -24,16 +24,26 @@ type SearchClientProps = {
     name: string;
     bio: string | null;
   }[];
+  playlists: {
+    id: number;
+    name: string;
+    songCount: number;
+  }[];
 };
 
-export function SearchClient({ albums, authors, songs }: SearchClientProps) {
-  const [selected, setSelected] = useState<"albums" | "songs" | "authors">(
-    "albums"
-  );
+export function SearchClient({
+  albums,
+  authors,
+  songs,
+  playlists,
+}: SearchClientProps) {
+  const [selected, setSelected] = useState<
+    "albums" | "songs" | "authors" | "playlists"
+  >("albums");
 
   return (
     <div className="space-y-10">
-      <div className="flex justify-between max-w-xs w-full mx-auto">
+      <div className="flex gap-x-4 justify-center">
         <button
           className={
             selected === "albums"
@@ -61,6 +71,16 @@ export function SearchClient({ albums, authors, songs }: SearchClientProps) {
           onClick={() => setSelected("authors")}
         >
           Authors
+        </button>
+        <button
+          className={
+            selected === "playlists"
+              ? "btn bg-green-500 hover:bg-green-600"
+              : "btn"
+          }
+          onClick={() => setSelected("playlists")}
+        >
+          Playlists
         </button>
       </div>
       {selected === "albums" ? (
@@ -135,7 +155,7 @@ export function SearchClient({ albums, authors, songs }: SearchClientProps) {
             </table>
           )}
         </div>
-      ) : (
+      ) : selected === "authors" ? (
         <div className="space-y-8">
           <h2 className="text-4xl">
             {authors.length > 0 ? "Authors" : "No authors found"}
@@ -164,6 +184,42 @@ export function SearchClient({ albums, authors, songs }: SearchClientProps) {
               </div>
             ))}
           </div>
+        </div>
+      ) : (
+        <div className="space-y-8">
+          <h2 className="text-4xl">
+            {playlists.length > 0 ? "Playlists" : "No playlists found"}
+          </h2>
+          <table className="table">
+            <thead>
+              <tr className="grid grid-cols-[2fr_6fr_3fr_2fr]">
+                <td>ID</td>
+                <td>Name</td>
+                <td>Number of Songs</td>
+                <td>Link</td>
+              </tr>
+            </thead>
+            <tbody>
+              {playlists.map((p) => (
+                <tr
+                  key={p.id}
+                  className="grid grid-cols-[2fr_6fr_3fr_2fr] hover:bg-base-300 items-center"
+                >
+                  <td>{p.id}</td>
+                  <td>{p.name}</td>
+                  <td>{p.songCount}</td>
+                  <td>
+                    <Link
+                      href={`/playlist/${p.id}`}
+                      className="btn btn-block btn-sm"
+                    >
+                      View details
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>

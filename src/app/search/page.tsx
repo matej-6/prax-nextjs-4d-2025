@@ -49,10 +49,35 @@ export default async function SearchPage({
     .selectAll()
     .execute();
 
+  const playlists = await db
+    .selectFrom("playlists")
+    .where("playlists.name", "like", `%${query}%`)
+    .select(["playlists.id as id", "playlists.name as name"])
+    .execute();
+
+  const songCount = new Map();
+  for (const playlist of playlists) {
+    const songs = await db
+      .selectFrom("playlists_songs")
+      .where("playlists_songs.playlist_id", "=", playlist.id)
+      .select(["song_id"])
+      .execute();
+
+    songCount.set(playlist.id, songs.length);
+  }
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+    <div className="font-sans items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-start">
-        <SearchClient albums={albums} authors={authors} songs={songs} />
+        <SearchClient
+          albums={albums}
+          authors={authors}
+          songs={songs}
+          playlists={playlists.map((p) => ({
+            ...p,
+            songCount: songCount.get(p.id),
+          }))}
+        />
       </main>
     </div>
   );

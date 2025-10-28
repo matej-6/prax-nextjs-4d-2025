@@ -14,9 +14,12 @@ export function NavBar() {
 
   return (
     <div className="navbar shadow-sm max-w-6xl mx-auto">
-      <div className="flex-1">
+      <div className="flex-1 items-center gap-x-2">
         <Link href="/" className="btn btn-ghost text-xl">
           Spotify
+        </Link>
+        <Link href="/playlists" className="btn btn-link">
+          Playlists
         </Link>
       </div>
       <div className="flex gap-2">
